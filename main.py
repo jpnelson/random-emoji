@@ -1,4 +1,4 @@
-import tweepy, random
+import tweepy, random, threading
 
 from emoji import get_emoji_list
 from config import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_KEY, ACCESS_SECRET
@@ -23,4 +23,17 @@ auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
 
 
-api.update_status(make_tweet())
+def set_interval(func, sec):
+    def func_wrapper():
+        set_interval(func, sec)
+        func()
+    t = threading.Timer(sec, func_wrapper)
+    t.start()
+    return t
+
+def tweet():
+    api.update_status(make_tweet())
+
+
+tweet()
+set_interval(tweet, 60 * 60 * 3)
