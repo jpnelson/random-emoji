@@ -6,8 +6,8 @@ from config import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_KEY, ACCESS_SECRET
 def get_random_emoji():
     emoji_list = get_emoji_list()
     emoji = random.choice(emoji_list)
-    print emoji
-    return unichr(emoji)
+    emoji_unicode_escaped = "\\U%08x" % emoji
+    return emoji_unicode_escaped.decode('unicode-escape')
 
 def make_tweet():
     tweet = get_random_emoji() + get_random_emoji()
